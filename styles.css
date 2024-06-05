@@ -1,4 +1,5 @@
 /* Custom CSS for the e-commerce site */
+
 body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
@@ -6,11 +7,17 @@ body {
 .container {
     max-width: 100%;
 }
-
+/* Remove highlighted border on input focus */
+.form-control:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: initial;
+}
 .row {
     margin-right: 0;
     margin-left: 0;
 }
+
 /* Header styles */
 .header {
     background-color: #333;
@@ -21,11 +28,14 @@ body {
     margin: 0;
 }
 .card{
-    max-width: 80%;
+    max-width: 100%;
 }
-.card-img,.card-img-top{
-    width: 70%;
-    height: 50%;
+.card-img-top{
+    width: 80%;
+    height: auto;
+}
+.card-img{
+    width: 100px;
 }
 
 .footer-links{
@@ -41,7 +51,7 @@ body {
 
 /* CSS for Circular Logo */
 .logo-img {
-    border-radius: 60%;
+    border-radius: 50%;
     width: 50px; /* Adjust size as needed */
     height: 50px; /* Adjust size as needed */
 }
@@ -55,11 +65,11 @@ body {
     position: absolute;
     top: 10px;
     right: 10px;
-    background-color: red;
+    background-color: rgb(224, 10, 10);
     color: white;
-    padding: 10px;
+    padding: 5px 10px;
     border-radius: 50%;
-    font-size: large;
+    font-size: 0.8rem;
 }
 
 /* Footer styles */
