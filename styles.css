@@ -1,0 +1,66 @@
+/* Custom CSS for the e-commerce site */
+
+/* Header styles */
+.header {
+    background-color: #333;
+    color: white;
+    padding: 1rem 0;
+}
+.title {
+    margin: 0;
+}
+.card{
+    max-width: 80%;
+}
+.card-img,.card-img-top{
+    width: 70%;
+    height: 50%;
+}
+
+.footer-links{
+    text-decoration: none;
+    color:white;
+}
+
+.custom-btn{
+    background-color: #333;
+    opacity: 50%;
+}
+
+
+/* CSS for Circular Logo */
+.logo-img {
+    border-radius: 60%;
+    width: 50px; /* Adjust size as needed */
+    height: 50px; /* Adjust size as needed */
+}
+
+
+/* Category section styles */
+.category {
+    margin-top: 3rem;
+}
+.discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 10px;
+    border-radius: 50%;
+    font-size: large;
+}
+
+/* Footer styles */
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+}
+
+/* Floating buttons styles */
+.floating-buttons {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
