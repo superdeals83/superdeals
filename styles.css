@@ -1,5 +1,16 @@
 /* Custom CSS for the e-commerce site */
+body {
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
 
+.container {
+    max-width: 100%;
+}
+
+.row {
+    margin-right: 0;
+    margin-left: 0;
+}
 /* Header styles */
 .header {
     background-color: #333;
