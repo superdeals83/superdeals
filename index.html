@@ -13,58 +13,67 @@
 <body>
     <!-- Header -->
     <header class="header" id="header">
-        <div class="container">
+        <div class="container pb-2">
             <div class="row">
                 <!-- Hamburger Menu -->
                 <div class="col-2">
                     <!-- Circular Logo -->
-                        <img src="assets/img/logo.png" alt="Logo" class="logo-img">
+                    <img src="assets/img/logo.png" alt="Logo" class="logo-img">
                 </div>
                 <!-- Title -->
                 <div class="col-9 text-start">
                     <span class="display-4">Super Deals</span>
                 </div>
-                <!-- Notification Icon -->
-               <!--- <div class="col-2">
-                    <button class="btn btn-lg">
-                        <i class="bi bi-bell text-light"></i>
-                    </button>
-                </div>-->
             </div>
+
             <!-- Search Bar -->
             <div class="row mt-3">
                 <div class="col-12">
-                    <input type="text" class="form-control" onclick="window.location.href='search.html'" placeholder="Search Products">
+                    <div class="input-group">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" class="form-control" onclick="window.location.href='search.html'" placeholder="Search Products" aria-label="Search Products" aria-describedby="basic-addon1">
+                    </div>
                 </div>
             </div>
-            <!-- Price Range Slider -->
-            <div class="row mt-3">
-                <label for="customRange1" class="form-label">Price range( ₹100- ₹100000)</label>
-                <div class="col-8">
-                    <!-- Add price range slider here -->
-                    <input type="range" class="form-range" value="50000" id="customRange1" min="100" max="100000" step="100" oninput="updateSliderValue(this.value)">
-                    <datalist id="tickmarks">
-                        <option value="100">
-                        <option value="1000">
-                        <option value="10000">
-                        <option value="100000">
-                    </datalist>
-                </div>
-                <div class="col-3">
-                    <span id="sliderValue"> ₹50000</span>
-                </div>
-                
-            </div>
+
         </div>
     </header>
 
     <!-- Body -->
     <main class="container mt-3">
-            <div class="row mb-3">
-                <img src="assets/img/banner.jpg" alt="banner" class="" width="480" height="120">
+        <div class="row mb-3">
+            <img src="assets/img/banner.jpg" alt="banner" class="" width="480" height="120">
+        </div>
+        <div class="row mt-5">
+            <div class="col-6">
+                <h6 class="">Sort By Price</h6>
             </div>
-            <div class="row row-cols-2 row-cols-md-2 g-2 mb-5 mt-5" id="productContainer">
+            <div class="col-6 text-end">
+                <h6 class="text-muted">Total Products: <b id="counter"></b></h6>
             </div>
+            
+        </div>
+        <div class="row mt-3 align-items-center">
+            <div class="col-6">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Low to High
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" data-value="low-to-high">Low to High</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="high-to-low">High to Low</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-6 text-end">
+                <button id="toggleViewBtn" class="btn btn-outline-secondary">
+                    <i class="bi bi-list"></i> List View
+                </button>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 g-2 mb-5 mt-2" id="productContainer"></div>
     </main>
 
     <!-- Footer -->
@@ -73,20 +82,18 @@
             <div class="row">
                 <!-- Logo Images -->
                 <div class="col-12 text-center">
-                    <!-- Add logo images here -->
                     <img src="assets/img/logo.png" alt="Logo" class="logo-img">
                 </div>
             </div>
             <div class="row mt-2 text-sm-start">
-                <p style="font-size: smaller;color:gray;">Welcome to <b>Super Deals</b>, your ultimate destination for the best online deals! We scour Amazon, Flipkart, and other leading e-commerce sites to bring you unbeatable discounts and exclusive offers on a wide range of products. Whether you're shopping for electronics, fashion, home goods, or more, Super Deals Hub ensures you save big on top-quality items. Shop smart, save more.</p>
+                <p style="font-size: smaller; color:gray;">Welcome to <b>Super Deals</b>, your ultimate destination for the best online deals! We scour Amazon, Flipkart, and other leading e-commerce sites to bring you unbeatable discounts and exclusive offers on a wide range of products. Whether you're shopping for electronics, fashion, home goods, or more, Super Deals Hub ensures you save big on top-quality items. Shop smart, save more.</p>
             </div>
             <div class="row mt-3">
                 <!-- Navigation Links -->
                 <div class="col-12 text-center">
-                    <a href="#" class="footer-links">Categories</a> |
-                    <a href="search.html" class="footer-links">Search</a> |
-                    <a href="#" class="footer-links">About Us</a> |
-                    <a href="#" class="footer-links">Contact Us</a> 
+                    <a href="search.html" class="footer-links">Search Products</a> |
+                    <a href="about.html" class="footer-links">About Us</a> |
+                    <a href="#" class="footer-links">Contact Us</a>
                 </div>
             </div>
             <div class="row mt-3">

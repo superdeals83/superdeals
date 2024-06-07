@@ -1,5 +1,9 @@
 /* Custom CSS for the e-commerce site */
 
+
+
+/* Additional CSS styles */
+
 body {
     overflow-x: hidden; /* Prevent horizontal scrolling */
 }
@@ -7,12 +11,14 @@ body {
 .container {
     max-width: 100%;
 }
+
 /* Remove highlighted border on input focus */
 .form-control:focus {
     outline: none;
     box-shadow: none;
-    border-color: initial;
+    border-color: white;
 }
+
 .row {
     margin-right: 0;
     margin-left: 0;
@@ -24,30 +30,48 @@ body {
     color: white;
     padding: 1rem 0;
 }
+
 .title {
     margin: 0;
 }
-.card{
+
+.card {
     max-width: 100%;
 }
-.card-img-top{
+
+.card-img-top {
     width: 80%;
     height: auto;
 }
-.card-img{
+
+.card-img {
     width: 100px;
 }
 
-.footer-links{
-    text-decoration: none;
-    color:white;
+/* Ensure badge is correctly positioned in grid view */
+.card .discount-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
 }
 
-.custom-btn{
+.input-group-text {
+    border-right: 0;
+    background-color: white;
+}
+.form-control {
+    border-left: 0;
+}
+
+.footer-links {
+    text-decoration: none;
+    color: white;
+}
+
+.custom-btn {
     background-color: #333;
     opacity: 50%;
 }
-
 
 /* CSS for Circular Logo */
 .logo-img {
@@ -56,15 +80,12 @@ body {
     height: 50px; /* Adjust size as needed */
 }
 
-
 /* Category section styles */
 .category {
     margin-top: 3rem;
 }
+
 .discount-badge {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     background-color: rgb(224, 10, 10);
     color: white;
     padding: 5px 10px;

@@ -1,6 +1,7 @@
 // Custom JavaScript for the e-commerce site
 // Array to store product data
 let search_data = [];
+
 // Function to toggle visibility of floating buttons
 function toggleFloatingButtons() {
     var floatingButtons = document.querySelector('.floating-buttons');
@@ -11,17 +12,39 @@ function toggleFloatingButtons() {
     }
 }
 
-// Function to update the displayed products based on the current price range
-function updateProductsByPriceRange(maxPrice) {
+// Event listener for dropdown selection
+document.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', function(event) {
+        event.preventDefault();
+        const selectedValue = this.getAttribute('data-value');
+        const selectedText = this.textContent;
+        document.getElementById("dropdownMenuButton").textContent = selectedText;
+
+        // Update products based on the selected sorting order
+        if (selectedValue === 'low-to-high') {
+            updateProductsByPriceOrder('low-to-high');
+        } else if (selectedValue === 'high-to-low') {
+            updateProductsByPriceOrder('high-to-low');
+        }
+    });
+});
+
+// Function to update the displayed products based on the selected price order
+function updateProductsByPriceOrder(order) {
     var productContainer = document.getElementById('productContainer');
     productContainer.innerHTML = ''; // Clear existing products
-    
+
+    // Sort the products based on the selected order
+    if (order === 'low-to-high') {
+        search_data.sort((a, b) => parseInt(a.price) - parseInt(b.price));
+    } else if (order === 'high-to-low') {
+        search_data.sort((a, b) => parseInt(b.price) - parseInt(a.price));
+    }
+
+    // Display sorted products
     search_data.forEach(function(product) {
-        var price = parseInt(product.price);
-        if (price <= maxPrice) {
-            const productCard = createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link);
-            productContainer.appendChild(productCard);
-        }
+        const productCard = createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link);
+        productContainer.appendChild(productCard);
     });
 }
 
@@ -29,11 +52,6 @@ function updateProductsByPriceRange(maxPrice) {
 window.addEventListener('scroll', function() {
     toggleFloatingButtons();
 });
-
-function updateSliderValue(value) {
-    document.getElementById('sliderValue').textContent ="₹"+ value;
-}
-
 
 // Function to fetch and load product data from file
 function load_products() {
@@ -64,12 +82,12 @@ function load_products() {
                 }
             });
             // Initial load of products
-            updateProductsByPriceRange(50000); // Assuming initial range is from ₹100 to ₹100000
+            updateProductsByPriceOrder('low-to-high'); // Default initial order
+            document.getElementById("counter").textContent = search_data.length;
         }
     };
     xhr.send();
 }
-
 
 function createProductCard(name, image, logo, price, discount, link) {
     // Create product card element
@@ -84,7 +102,7 @@ function createProductCard(name, image, logo, price, discount, link) {
             <img src="assets/img/${logo}" class="card-img px-3 " alt="Affiliate Company Logo"></div>
             <div class="card-body">
                 <h6 class="card-title text-sm">${name}</h6>
-                <p class="card-text">Price:  ₹${price}</p>
+                <p class="card-text">Price: ₹${price}</p>
                 <a href="${link}" class="btn btn-primary">Buy Now</a>
             </div>
         </div>
@@ -97,23 +115,25 @@ function createProductCard(name, image, logo, price, discount, link) {
     return card;
 }
 
+// Toggle between grid and list view
+document.getElementById('toggleViewBtn').addEventListener('click', function() {
+    var productContainer = document.getElementById('productContainer');
+    if (productContainer.classList.contains('row-cols-2')) {
+        productContainer.classList.remove('row-cols-2');
+        productContainer.classList.add('list-view');
+        this.innerHTML = '<i class="bi bi-list"></i> list View';
+    } else {
+        productContainer.classList.remove('list-view');
+        productContainer.classList.add('row-cols-2');
+        this.innerHTML = '<i class="bi bi-grid"></i> grid View';
+    }
+});
+
 
 // Function to initialize the page
 function init() {
     load_products(); // Load products initially
-    var customRange1 = document.getElementById('customRange1');
-    customRange1.addEventListener('input', function() {
-        var value = parseInt(this.value);
-        updateSliderValue(value); // Update the slider value display
-    });
-    // Initialize slider value
-    updateSliderValue(customRange1.value);
-    
-    // Update products when slider value changes
-    customRange1.addEventListener('change', function() {
-        var maxPrice = parseInt(this.value); // Assuming max price is the upper bound of the slider
-        updateProductsByPriceRange(maxPrice);
-    });
 }
+
 // Call the init function when the page is loaded
 window.onload = init;
