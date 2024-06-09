@@ -99,7 +99,7 @@ function createProductCard(name, image, logo, price, discount, link) {
         <div class="card text-center">
             <div><span class="discount-badge">${discount}%</span>
             <img src="assets/img/${image}" class="card-img-top" alt="Product Image">
-            <img src="assets/img/${logo}" class="card-img px-3 " alt="Affiliate Company Logo"></div>
+            <img src="assets/${logo}" class="card-img px-3 " alt="Affiliate Company Logo"></div>
             <div class="card-body">
                 <h6 class="card-title text-sm">${name}</h6>
                 <p class="card-text">Price: ₹${price}</p>
