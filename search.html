@@ -173,7 +173,10 @@
     </div>
 
     <div class="row mt-3 d-none" id="btn_">
-        <div class="col-6">
+        <div class="col-1 d-none" id="sortbyprice">
+            <h6 class="">Sort By Price</h6>
+        </div>
+        <div class="col-6 text-start">
             <div class="dropdown">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     Low to High
@@ -294,6 +297,58 @@
             toggleClearButton(); // Hide the clear button
         });
 
+document.addEventListener("DOMContentLoaded", function() {
+    if(window.innerWidth >= 1024){
+        function applyLargeScreenStyles() {
+        const searchProduct = document.querySelector('#searchProduct');
+
+        if (searchProduct) {
+            // Remove old classes
+            searchProduct.classList.remove('row-cols-1', 'row-cols-md-2');
+            // Add new classes
+            searchProduct.classList.add('row-cols-4', 'row-cols-md-4');
+
+        } 
+        document.querySelector('#sortbyprice').classList.remove('d-none');
+        document.querySelector('#toggleViewBtn').style.display='none';
+        
+    }
+
+    // Apply styles initially
+    applyLargeScreenStyles();
+
+    // Reapply styles on window resize
+    window.addEventListener('resize', function() {
+        applyLargeScreenStyles();
+    });
+    const style = document.createElement('style');
+    style.innerHTML = `
+        .card {
+            position: relative;
+            overflow: hidden; /* Ensures the enlarged image does not overflow the card */
+        }
+        
+        .card-img-top {
+            transition: transform 0.3s ease; /* Smooth transition for the transform property */
+        }
+        
+        .card-img-top:hover {
+            transform: scale(1.2); /* Scale the image to 120% of its original size */
+        }
+    `;
+    document.head.appendChild(style);
+
+    const cardImgTop = document.querySelector('.card-img-top');
+
+    cardImgTop.addEventListener('mouseover', function() {
+        cardImgTop.style.transform = 'scale(1.2)';
+    });
+
+    cardImgTop.addEventListener('mouseout', function() {
+        cardImgTop.style.transform = 'scale(1)';
+    });
+    }
+});
     </script>
 </body>
 </html>

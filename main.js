@@ -129,6 +129,66 @@ document.getElementById('toggleViewBtn').addEventListener('click', function() {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    if(window.innerWidth >= 1024){
+        function applyLargeScreenStyles() {
+            const productContainer = document.querySelector('#productContainer');
+    
+            if (productContainer) {
+                // Remove old classes
+                productContainer.classList.remove('row-cols-1', 'row-cols-md-2');
+                // Add new classes
+                productContainer.classList.add('row-cols-4', 'row-cols-md-4');
+    
+            } 
+            document.querySelector('#superdealslogo').classList.replace('col-2','col-1');
+            var logo = document.querySelector('#superdeals_logo');
+            logo.style.width='80px';
+            logo.style.height = '80px';
+            document.querySelector('#superdealstitle').classList.replace('col-9','col-11');
+            document.querySelector('#toggleViewBtn').style.display='none';
+            document.querySelector('#banner').style.height='220px';
+
+        }
+    
+        // Apply styles initially
+        applyLargeScreenStyles();
+    
+        // Reapply styles on window resize
+        window.addEventListener('resize', function() {
+            applyLargeScreenStyles();
+        });
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .card {
+                position: relative;
+                overflow: hidden; /* Ensures the enlarged image does not overflow the card */
+            }
+            
+            .card-img-top {
+                transition: transform 0.3s ease; /* Smooth transition for the transform property */
+            }
+            
+            .card-img-top:hover {
+                transform: scale(1.2); /* Scale the image to 120% of its original size */
+            }
+        `;
+        document.head.appendChild(style);
+    
+        const cardImgTop = document.querySelector('.card-img-top');
+    
+        cardImgTop.addEventListener('mouseover', function() {
+            cardImgTop.style.transform = 'scale(1.2)';
+        });
+    
+        cardImgTop.addEventListener('mouseout', function() {
+            cardImgTop.style.transform = 'scale(1)';
+        });
+    }
+});
+
+
+
 
 // Function to initialize the page
 function init() {
