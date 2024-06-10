@@ -82,7 +82,13 @@ function load_products() {
                 }
             });
             // Initial load of products
-            updateProductsByPriceOrder('low-to-high'); // Default initial order
+            // updateProductsByPriceOrder('low-to-high'); // Default initial order
+            search_data.reverse();
+            // Display products
+            search_data.forEach(function(product) {
+                const productCard = createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link);
+                productContainer.appendChild(productCard);
+            });
             document.getElementById("counter").textContent = search_data.length;
         }
     };
@@ -97,15 +103,31 @@ function createProductCard(name, image, logo, price, discount, link) {
     // Construct HTML for product card
     var cardHTML = `
         <div class="card text-center">
-            <div><span class="discount-badge">${discount}%</span>
-            <img src="assets/img/${image}" class="card-img-top" alt="Product Image">
-            <img src="assets/${logo}" class="card-img px-3 " alt="Company Logo"></div>
-            <div class="card-body">
-                <h6 class="card-title text-sm">${name}</h6>
-                <p class="card-text">Price: ₹${price}</p>
-                <a href="${link}" class="btn btn-primary">View Details</a>
-            </div>
-        </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="discount-badge">${discount}%</span>
+                                <img src="assets/img/${image}" class="card-img-top img-fluid" alt="Product Image">
+                            </div>
+                        </div>
+                        <div class="row justify-center mt-2">
+                            <div class="col-12 text-center">
+                                <img src="assets/${logo}" class="card-img px-3 img-fluid" alt="Company Logo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row mb-2">
+                                <div class="col-12 text-center">
+                                    <h6 class="card-title text-sm small text-wrap">${name}</h6>
+                                    <p class="card-text small">Price:  ₹${price}</p>
+                                </div>
+                            </div> 
+                        </div>
+                        <a href="${link}" class="btn btn-primary">View Details</a>
+                    </div>
+                </div>
     `;
 
     // Set HTML content of card

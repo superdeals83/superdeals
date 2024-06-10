@@ -13,9 +13,9 @@
         .suggestion-list {
             border: 0px solid #fcfefff8;
             border-top: none;
-            max-height: 220px;
+            max-height: 450px;
             overflow-y: auto;
-            position: absolute;
+            position: fixed;
             width: 100%;
             z-index: 1000;
         }
@@ -24,10 +24,13 @@
             border-bottom: 1px solid #ccc;
             cursor: pointer;
             padding: 10px;
-            color:blue;
+            color: #0024a4;
         }
         .suggestion-item:hover {
             background: #f0f0f0;
+        }
+        .content{
+            margin-top: 58px;
         }
         
     </style>
@@ -44,17 +47,17 @@
                         if (line.trim() !== '') {
                             const parts = line.split('|'); // Split by a delimiter, e.g., '|'
                             const product = {
-                                name: parts[0],
-                                image: parts[1],
-                                logo: parts[2],
-                                price: parts[3],
-                                discount: parts[4],
-                                link: parts[5]
+                                name: parts[0] || '',
+                                image: parts[1] || '',
+                                logo: parts[2] || '',
+                                price: parts[3] || '',
+                                discount: parts[4] || '',
+                                link: parts[5] || '',
+                                category: parts[6] || ''
                             };
                             search_data.push(product);
                         }
                     });
-                    
                 }
             };
             xhr.send();
@@ -66,19 +69,78 @@
             suggestionList.innerHTML = '';
 
             if (query) {
-                const suggestions = search_data
-                    .filter(product => product.name.toLowerCase().includes(query))
+                const categorySuggestions = [...new Set(search_data
+                    .filter(product => product.category && product.category.toLowerCase().includes(query))
+                    .map(product => product.category))];
+
+                const productSuggestions = search_data
+                    .filter(product => product.name && product.name.toLowerCase().includes(query))
                     .map(product => product.name);
 
-                suggestions.forEach(suggestion => {
+                categorySuggestions.forEach(suggestion => {
                     const item = document.createElement('div');
-                    item.classList.add('suggestion-item');
-                    item.textContent = suggestion;
+                    item.classList.add('suggestion-item', 'd-flex', 'align-items-center', 'text-sm', 'smaller');
+                    
+                    // Create a container for the icon and text
+                    const contentContainer = document.createElement('div');
+                    contentContainer.classList.add('d-flex', 'align-items-center');
+                    
+                    // Create the icon element
+                    const icon = document.createElement('i');
+                    icon.classList.add('bi', 'bi-search', 'me-2', 'text-dark');
+                    icon.style.fontSize = "20px";
+                    
+                    // Append the icon to the content container
+                    contentContainer.appendChild(icon);
+                    
+                    // Set the text content
+                    contentContainer.appendChild(document.createTextNode(`Category: ${suggestion}`));
+                    
+                    // Add the content container to the suggestion item
+                    item.appendChild(contentContainer);
+                    
+                    // Add onclick event handler
                     item.onclick = function() {
                         document.getElementById('searchBar').value = suggestion;
                         searchProducts();
                         suggestionList.innerHTML = '';
                     };
+                    
+                    // Append the suggestion element to the suggestion list
+                    suggestionList.appendChild(item);
+                    
+                });
+
+                productSuggestions.forEach(suggestion => {
+                    const item = document.createElement('div');
+                    item.classList.add('suggestion-item', 'd-flex', 'align-items-center', 'text-sm', 'smaller');
+                    
+                    // Create a container for the icon and text
+                    const contentContainer = document.createElement('div');
+                    contentContainer.classList.add('d-flex', 'align-items-center');
+                    
+                    // Create the icon element
+                    const icon = document.createElement('i');
+                    icon.classList.add('bi', 'bi-search', 'me-2', 'text-dark');
+                    icon.style.fontSize = "20px";
+                    
+                    // Append the icon to the content container
+                    contentContainer.appendChild(icon);
+                    
+                    // Set the text content
+                    contentContainer.appendChild(document.createTextNode(suggestion));
+                    
+                    // Add the content container to the suggestion item
+                    item.appendChild(contentContainer);
+                    
+                    // Add onclick event handler
+                    item.onclick = function() {
+                        document.getElementById('searchBar').value = suggestion;
+                        searchProducts();
+                        suggestionList.innerHTML = '';
+                    };
+                    
+                    // Append the suggestion element to the suggestion list
                     suggestionList.appendChild(item);
                 });
             }
@@ -87,70 +149,129 @@
         function searchProducts() {
             const query = document.getElementById('searchBar').value.toLowerCase();
             const searchProduct = document.getElementById('searchProduct');
-            const productCount = document.getElementById('productCount');
             const suggestionList = document.getElementById('suggestionList');
             suggestionList.innerHTML = '';
             searchProduct.innerHTML = '';
             document.getElementById('clearButton').classList.add('d-none');
             document.getElementById("searchBar").classList.remove("rounded-end-0");
-            if (!query) {
-                productCount.innerHTML = '<p>Enter the product name!</p>';
-                return;
-            }
 
-            const filteredProducts = search_data.filter(product => product.name.toLowerCase().includes(query));
+            const filteredProducts = search_data.filter(product =>
+                (product.name && product.name.toLowerCase().includes(query)) || 
+                (product.category && product.category.toLowerCase().includes(query)));
             const count = filteredProducts.length;
 
             if (count > 0) {
                 filteredProducts.forEach(product => {
                     searchProduct.appendChild(createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link));
-                    // Initial load of products
-                   updateProductsByPriceOrder('low-to-high'); // Default initial order
-                  document.getElementById("btn_").classList.remove("d-none");
+                    document.getElementById("btn_").classList.remove("d-none");
                 });
-                productCount.innerHTML = `<p>"${query}" ${count} products found!</p>`;
-                document.getElementById('searchBar').value = '';
-            } else {
-                productCount.innerHTML = '<p>No products found!</p>';
             }
         }
 
         function createProductCard(name, image, logo, price, discount, link) {
-            // Create product card element
             var card = document.createElement('div');
             card.classList.add('col');
 
-            // Construct HTML for product card
             var cardHTML = `
                 <div class="card text-center">
-                    <div><span class="discount-badge">${discount}%</span>
-                    <img src="assets/img/${image}" class="card-img-top" alt="Product Image">
-                    <img src="assets/${logo}" class="card-img px-3 " alt="Company Logo"></div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <span class="discount-badge">${discount}%</span>
+                                <img src="assets/img/${image}" class="card-img-top img-fluid" alt="Product Image">
+                            </div>
+                        </div>
+                        <div class="row justify-center mt-2">
+                            <div class="col-12 text-center">
+                                <img src="assets/${logo}" class="card-img px-3 img-fluid" alt="Company Logo">
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-body">
-                        <h6 class="card-title text-sm">${name}</h6>
-                        <p class="card-text">Price:  ₹${price}</p>
+                        <div class="container">
+                            <div class="row mb-2">
+                                <div class="col-12 text-center">
+                                    <h6 class="card-title text-sm small text-wrap">${name}</h6>
+                                    <p class="card-text small">Price:  ₹${price}</p>
+                                </div>
+                            </div> 
+                        </div>
                         <a href="${link}" class="btn btn-primary">View Details</a>
                     </div>
                 </div>
             `;
 
-            // Set HTML content of card
             card.innerHTML = cardHTML;
 
-            // Return created product card
             return card;
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            fetchDataFromFile();
+        });
+
+
+        function updateProductsByPriceOrder(order) {
+            var searchProduct = document.getElementById('searchProduct');
+            const query = document.getElementById('searchBar').value.toLowerCase();
+
+            searchProduct.innerHTML = ''; // Clear existing products
+
+            const filteredProducts = search_data.filter(product =>
+                (product.name && product.name.toLowerCase().includes(query)) || 
+                (product.category && product.category.toLowerCase().includes(query)));
+            filteredProducts.sort((a, b) => order === 'low-to-high' ? parseInt(a.price) - parseInt(b.price) : parseInt(b.price) - parseInt(a.price));
+
+            filteredProducts.forEach(function(product) {
+                searchProduct.appendChild(createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link));
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            if(window.innerWidth >= 1024){
+                function applyLargeScreenStyles() {
+                    const searchProduct = document.querySelector('#searchProduct');
+
+                    if (searchProduct) {
+                        searchProduct.classList.remove('row-cols-1', 'row-cols-md-2');
+                        searchProduct.classList.add('row-cols-4');
+                    }
+                }
+
+                function applyProductImageStyles() {
+                    const cardImgTops = document.querySelectorAll('.card-img-top');
+                    cardImgTops.forEach(cardImgTop => {
+                        cardImgTop.style.height = '300px';
+                        cardImgTop.style.objectFit = 'contain';
+                        cardImgTop.style.transition = 'transform 0.3s ease-in-out';
+                    });
+                }
+
+                applyLargeScreenStyles();
+                applyProductImageStyles();
+
+                const cardImgTop = document.querySelector('.card-img-top');
+                if (cardImgTop) {
+                    cardImgTop.addEventListener('mouseover', function() {
+                        cardImgTop.style.transform = 'scale(1.2)';
+                    });
+
+                    cardImgTop.addEventListener('mouseout', function() {
+                        cardImgTop.style.transform = 'scale(1)';
+                    });
+                }
+            }
+        });
+
     </script>
 </head>
-<body onload="fetchDataFromFile()">
-    <!-- Header -->
+<body>
     <header class="header" id="header">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-1 text-center">
                     <a href="index.html"><i class="bi bi-arrow-left" style="font-size: larger;text-decoration: none;color:white;"></i></a>
                 </div>
-                <!-- Search Bar -->
                 <div class="col-11">
                     <div class="input-group">
                         <span class="input-group-text" id="basic-addon1">
@@ -166,32 +287,27 @@
         </div>
     </header>
     <div id="suggestionList" class="suggestion-list"></div>
-
-    <!-- Product Count -->
-    <div class="container mt-3">
-        <div id="productCount" class="text-center"></div>
-    </div>
-
-    <div class="row mt-3 d-none" id="btn_">
-        <div class="col-1 d-none" id="sortbyprice">
-            <h6 class="">Sort By Price</h6>
-        </div>
-        <div class="col-6 text-start">
-            <div class="dropdown">
-                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Low to High
+    <div class="content">
+    <div class="container">
+        <div class="row d-none" id="btn_">
+            <div class="col-6">
+                <button id="toggleViewBtn" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-list"></i> List View
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#" data-value="low-to-high">Low to High</a></li>
-                    <li><a class="dropdown-item" href="#" data-value="high-to-low">High to Low</a></li>
-                </ul>
+            </div>
+            <div class="col-6 text-end">
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        Sort By
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" data-value="low-to-high">Low to High</li>
+                        <li><a class="dropdown-item" href="#" data-value="high-to-low">High to Low</li>
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="col-6 text-end">
-            <button id="toggleViewBtn" class="btn btn-outline-secondary">
-                <i class="bi bi-list"></i> List View
-            </button>
-        </div>
+    </div>
     </div>
 
     <main class="container mt-5">
@@ -199,30 +315,25 @@
         </div>
     </main>
 
-    <!-- Floating Buttons -->
     <div class="floating-buttons">
-        <!--<a href="" class="btn btn-primary search-btn custom-btn"><i class="bi bi-search"></i></a>-->
-        <a href="#header" class="btn btn-primary go-top-btn custom-btn"><i class="bi bi-arrow-up"></i></a>
+        <a href="#header" id="scroll" class="btn btn-primary go-top-btn custom-btn"><i class="bi bi-arrow-up"></i></a>
     </div>
 
-    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Toggle between grid and list view
         document.getElementById('toggleViewBtn').addEventListener('click', function() {
             var searchProduct = document.getElementById('searchProduct');
             if (searchProduct.classList.contains('row-cols-2')) {
                 searchProduct.classList.remove('row-cols-2');
                 searchProduct.classList.add('list-view');
-                this.innerHTML = '<i class="bi bi-list"></i> list View';
+                this.innerHTML = '<i class="bi bi-list"></i> List View';
             } else {
                 searchProduct.classList.remove('list-view');
                 searchProduct.classList.add('row-cols-2');
-                this.innerHTML = '<i class="bi bi-grid"></i> grid View';
+                this.innerHTML = '<i class="bi bi-grid"></i> Grid View';
             }
         });
 
-        // Event listener for dropdown selection
         document.querySelectorAll('.dropdown-item').forEach(item => {
             item.addEventListener('click', function(event) {
                 event.preventDefault();
@@ -230,7 +341,6 @@
                 const selectedText = this.textContent;
                 document.getElementById("dropdownMenuButton").textContent = selectedText;
 
-                // Update products based on the selected sorting order
                 if (selectedValue === 'low-to-high') {
                     updateProductsByPriceOrder('low-to-high');
                 } else if (selectedValue === 'high-to-low') {
@@ -239,116 +349,28 @@
             });
         });
 
-        // Function to update the displayed products based on the selected price order
-        function updateProductsByPriceOrder(order) {
-            var searchProduct = document.getElementById('searchProduct');
-            searchProduct.innerHTML = ''; // Clear existing products
-
-            // Sort the products based on the selected order
-            if (order === 'low-to-high') {
-                search_data.sort((a, b) => parseInt(a.price) - parseInt(b.price));
-            } else if (order === 'high-to-low') {
-                search_data.sort((a, b) => parseInt(b.price) - parseInt(a.price));
-            }
-
-            // Display sorted products
-            search_data.forEach(function(product) {
-                const productCard = createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link);
-                searchProduct.appendChild(productCard);
-            });
-        }
-
-        // Function to toggle visibility of floating buttons
-        function toggleFloatingButtons() {
-            var floatingButtons = document.querySelector('.floating-buttons');
-            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                floatingButtons.style.display = 'block';
-            } else {
-                floatingButtons.style.display = 'none';
-            }
-        }
-        // Event listener for scroll event to toggle floating buttons visibility
-        window.addEventListener('scroll', function() {
-            toggleFloatingButtons();
-        });
-
-        // Function to toggle visibility of clear button
         function toggleClearButton() {
             const searchBar = document.getElementById('searchBar');
             const clearButton = document.getElementById('clearButton');
             if (searchBar.value.trim() !== '') {
                 clearButton.classList.remove('d-none');
                 document.getElementById("searchBar").classList.add("rounded-end-0");
-                } else {
-                    clearButton.classList.add('d-none');
-                    document.getElementById("searchBar").classList.remove("rounded-end-0");
+            } else {
+                clearButton.classList.add('d-none');
+                document.getElementById("searchBar").classList.remove("rounded-end-0");
             }
         }
 
-        // Event listener for keyup event on the search bar
         document.getElementById('searchBar').addEventListener('keyup', function() {
             toggleClearButton();
         });
 
-        // Event listener for click event on the clear button
         document.getElementById('clearButton').addEventListener('click', function() {
             const searchBar = document.getElementById('searchBar');
             searchBar.value = ''; // Clear the input field
             toggleClearButton(); // Hide the clear button
         });
-
-document.addEventListener("DOMContentLoaded", function() {
-    if(window.innerWidth >= 1024){
-        function applyLargeScreenStyles() {
-        const searchProduct = document.querySelector('#searchProduct');
-
-        if (searchProduct) {
-            // Remove old classes
-            searchProduct.classList.remove('row-cols-1', 'row-cols-md-2');
-            // Add new classes
-            searchProduct.classList.add('row-cols-4', 'row-cols-md-4');
-
-        } 
-        document.querySelector('#sortbyprice').classList.remove('d-none');
-        document.querySelector('#toggleViewBtn').style.display='none';
-        
-    }
-
-    // Apply styles initially
-    applyLargeScreenStyles();
-
-    // Reapply styles on window resize
-    window.addEventListener('resize', function() {
-        applyLargeScreenStyles();
-    });
-    const style = document.createElement('style');
-    style.innerHTML = `
-        .card {
-            position: relative;
-            overflow: hidden; /* Ensures the enlarged image does not overflow the card */
-        }
-        
-        .card-img-top {
-            transition: transform 0.3s ease; /* Smooth transition for the transform property */
-        }
-        
-        .card-img-top:hover {
-            transform: scale(1.2); /* Scale the image to 120% of its original size */
-        }
-    `;
-    document.head.appendChild(style);
-
-    const cardImgTop = document.querySelector('.card-img-top');
-
-    cardImgTop.addEventListener('mouseover', function() {
-        cardImgTop.style.transform = 'scale(1.2)';
-    });
-
-    cardImgTop.addEventListener('mouseout', function() {
-        cardImgTop.style.transform = 'scale(1)';
-    });
-    }
-});
+ 
     </script>
 </body>
 </html>

@@ -28,15 +28,24 @@ body {
 .header {
     background-color: #333;
     color: white;
-    padding: 1rem 0;
+    padding: 10px 0;
+    position: fixed;
+    top:0;
+    width: 100%;
+    z-index: 1000;
 }
 
 .title {
     margin: 0;
 }
 
+#banner{
+    margin-top: 130px;
+}
+
 .card {
     max-width: 100%;
+    overflow: hidden;
 }
 
 .card-img-top {
