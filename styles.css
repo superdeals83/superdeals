@@ -1,5 +1,22 @@
 /* Custom CSS for the e-commerce site */
 
+.upcoming-deals {
+    margin: 20px 0;
+    padding: 10px;
+    background-color: #f8d7da;
+    border-radius: 10px;
+    text-align: center;
+}
+.upcoming-deals h6 {
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #dc3545;
+    animation: blink 1.5s linear infinite;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
 
 
 /* Additional CSS styles */
