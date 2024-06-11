@@ -209,6 +209,13 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+var goTopBtn = document.getElementById('scroll');
+goTopBtn.addEventListener('click', function() {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
 
 
 

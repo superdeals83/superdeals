@@ -13,11 +13,13 @@
         .suggestion-list {
             border: 0px solid #fcfefff8;
             border-top: none;
-            max-height: 450px;
+            max-height: 500px;
             overflow-y: auto;
             position: fixed;
             width: 100%;
             z-index: 1000;
+            margin-top: 10px;
+            background-color: white;
         }
         .suggestion-item {
             background: white;
@@ -28,9 +30,6 @@
         }
         .suggestion-item:hover {
             background: #f0f0f0;
-        }
-        .content{
-            margin-top: 58px;
         }
         
     </style>
@@ -203,6 +202,11 @@
 
             card.innerHTML = cardHTML;
 
+             // Add event listener to stop propagation
+            card.addEventListener('click', function(event) {
+                event.stopPropagation();
+            });
+
             return card;
         }
 
@@ -285,11 +289,10 @@
                 </div>
             </div>
         </div>
+       <div id="suggestionList" class="suggestion-list"></div>
     </header>
-    <div id="suggestionList" class="suggestion-list"></div>
-    <div class="content">
-    <div class="container">
-        <div class="row d-none" id="btn_">
+    <div class="container mt-5" >
+        <div class="row d-none" id="btn_" style="margin-top:80px;">
             <div class="col-6">
                 <button id="toggleViewBtn" class="btn btn-outline-secondary btn-sm">
                     <i class="bi bi-list"></i> List View
@@ -308,14 +311,13 @@
             </div>
         </div>
     </div>
-    </div>
 
     <main class="container mt-5">
         <div class="row row-cols-1 row-cols-md-2 g-2 mb-5" id="searchProduct">
         </div>
     </main>
 
-    <div class="floating-buttons">
+    <div class="floating-buttons" style="display: none;">
         <a href="#header" id="scroll" class="btn btn-primary go-top-btn custom-btn"><i class="bi bi-arrow-up"></i></a>
     </div>
 
@@ -349,6 +351,7 @@
             });
         });
 
+
         function toggleClearButton() {
             const searchBar = document.getElementById('searchBar');
             const clearButton = document.getElementById('clearButton');
@@ -370,7 +373,32 @@
             searchBar.value = ''; // Clear the input field
             toggleClearButton(); // Hide the clear button
         });
- 
+
+        // Function to toggle visibility of floating buttons
+        function toggleFloatingButtons() {
+            var floatingButtons = document.querySelector('.floating-buttons');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                floatingButtons.style.display = 'block';
+            } else {
+                floatingButtons.style.display = 'none';
+            }
+        }
+
+        // Event listener for scroll event to toggle floating buttons visibility
+        window.addEventListener('scroll', function() {
+            toggleFloatingButtons();
+        });
+        
+        var goTopBtn = document.getElementById('scroll');
+        goTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+
+        
     </script>
 </body>
 </html>
