@@ -102,8 +102,8 @@ body {
 /* CSS for Circular Logo */
 .logo-img {
     border-radius: 50%;
-    width: 50px; /* Adjust size as needed */
-    height: 50px; /* Adjust size as needed */
+    width: 45px; /* Adjust size as needed */
+    height: 45px; /* Adjust size as needed */
 }
 
 /* Category section styles */
