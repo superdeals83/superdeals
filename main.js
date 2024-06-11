@@ -106,7 +106,7 @@ function createProductCard(name, image, logo, price, discount, link) {
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                                <span class="discount-badge">${discount}%</span>
+                                <span class="discount-badge">${discount}% off</span>
                                 <img src="assets/img/${image}" class="card-img-top img-fluid" alt="Product Image">
                             </div>
                         </div>
@@ -148,6 +148,7 @@ document.getElementById('toggleViewBtn').addEventListener('click', function() {
         productContainer.classList.remove('list-view');
         productContainer.classList.add('row-cols-2');
         this.innerHTML = '<i class="bi bi-grid"></i> grid View';
+        
     }
 });
 

@@ -176,7 +176,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-12">
-                                <span class="discount-badge">${discount}%</span>
+                                <span class="discount-badge">${discount}% off</span>
                                 <img src="assets/img/${image}" class="card-img-top img-fluid" alt="Product Image">
                             </div>
                         </div>
@@ -291,29 +291,27 @@
         </div>
        <div id="suggestionList" class="suggestion-list"></div>
     </header>
-    <div class="container mt-5" >
-        <div class="row d-none" id="btn_" style="margin-top:80px;">
+
+    <main class="container mt-5">
+        <div class="row align-items-center d-none" id="btn_" style="margin-top: 80px;">
             <div class="col-6">
-                <button id="toggleViewBtn" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-list"></i> List View
-                </button>
-            </div>
-            <div class="col-6 text-end">
                 <div class="dropdown">
-                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         Sort By
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#" data-value="low-to-high">Low to High</li>
-                        <li><a class="dropdown-item" href="#" data-value="high-to-low">High to Low</li>
+                        <li><a class="dropdown-item" href="#" data-value="low-to-high">Low to High</a></li>
+                        <li><a class="dropdown-item" href="#" data-value="high-to-low">High to Low</a></li>
                     </ul>
                 </div>
             </div>
+            <div class="col-6 text-end">
+                <button id="toggleViewBtn" class="btn btn-outline-secondary">
+                    <i class="bi bi-list"></i> List View
+                </button>
+            </div>
         </div>
-    </div>
-
-    <main class="container mt-5">
-        <div class="row row-cols-1 row-cols-md-2 g-2 mb-5" id="searchProduct">
+        <div class="row row-cols-1 row-cols-md-2 g-2 mb-5 mt-2" id="searchProduct">
         </div>
     </main>
 
