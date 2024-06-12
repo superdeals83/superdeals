@@ -54,7 +54,7 @@
                                 price: parts[3] || '',
                                 discount: parts[4] || '',
                                 link: parts[5] || '',
-                                category: parts[6] || ''
+                                category: parts[6] ? parts[6].split(',').map(cat => cat.trim().toLowerCase()) : []
                             };
                             search_data.push(product);
                         }
@@ -71,8 +71,8 @@
 
             if (query) {
                 const categorySuggestions = [...new Set(search_data
-                    .filter(product => product.category && product.category.toLowerCase().includes(query))
-                    .map(product => product.category))];
+                .filter(product => product.category.some(cat => cat.includes(query)))
+                .flatMap(product => product.category))];
 
                 const productSuggestions = search_data
                     .filter(product => product.name && product.name.toLowerCase().includes(query))
@@ -158,7 +158,7 @@
 
             const filteredProducts = search_data.filter(product =>
                 (product.name && product.name.toLowerCase().includes(query)) || 
-                (product.category && product.category.toLowerCase().includes(query))
+                (product.category && product.category.some(cat => cat.includes(query)))
             );
 
             // Update the global search_data with the filtered products

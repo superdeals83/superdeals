@@ -1,5 +1,7 @@
 let search_data = [];
 let currentPage = 1;
+let categories = [];
+let currentCategoryIndex = 0;
 const productsPerPage = 20;
 
 // Function to toggle visibility of floating buttons
@@ -60,32 +62,42 @@ function load_products() {
             const lines = xhr.responseText.split('\n');
             lines.forEach(function (line) {
                 if (line.trim() !== '') {
-                    const parts = line.split('|'); // Split by a delimiter, e.g., '|'
-                    const name = parts[0];
-                    const image = parts[1];
-                    const logo = parts[2];
-                    const price = parts[3];
-                    const discount = parts[4];
-                    const link = parts[5];
-                    const product = {
-                        name: name,
-                        image: image,
-                        logo: logo,
-                        price: price,
-                        discount: discount,
-                        link: link
-                    };
-                    search_data.push(product);
-                }
+                    const parts = line.split('|');
+                            const product = {
+                                name: parts[0] || '',
+                                image: parts[1] || '',
+                                logo: parts[2] || '',
+                                price: parts[3] || '',
+                                discount: parts[4] || '',
+                                link: parts[5] || '',
+                                categories: parts[6] ? parts[6].split(',').map(cat => cat.trim().toLowerCase()) : []
+                            };
+                            search_data.push(product);
+                            product.categories.forEach(cat => {
+                                if (!categories.includes(cat)) {
+                                    categories.push(cat);
+                                }
+                            });
+                        }
             });
             // Initial load of products
             // updateProductsByPriceOrder('low-to-high'); // Default initial order
             search_data.reverse();
             renderProducts();
             document.getElementById("counter").textContent = search_data.length;
+            categories = categories.sort(); // Sort categories alphabetically
+            renderProducts();
+            startCategoryRotation();
         }
     };
     xhr.send();
+}
+
+function startCategoryRotation() {
+    setInterval(() => {
+        document.getElementById('searchBar').placeholder = `Search ${categories[currentCategoryIndex]}`;
+        currentCategoryIndex = (currentCategoryIndex + 1) % categories.length;
+    }, 5000);
 }
 
 function renderProducts() {
