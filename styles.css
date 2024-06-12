@@ -116,6 +116,35 @@ body {
     display: inline-block;
 }
 
+/*Pagination*/
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.page-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    margin: 0 5px;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.page-btn.active {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.page-btn:disabled {
+    background-color: #e0e0e0;
+    cursor: not-allowed;
+}
+
+
+
 /* Footer styles */
 .footer {
     background-color: #333;

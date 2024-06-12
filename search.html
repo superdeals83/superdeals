@@ -35,6 +35,8 @@
     </style>
     <script>
         let search_data = [];
+        let currentPage = 1;
+        const productsPerPage = 20;
         function fetchDataFromFile() {
             document.getElementById('searchBar').focus();
             const xhr = new XMLHttpRequest();
@@ -156,16 +158,95 @@
 
             const filteredProducts = search_data.filter(product =>
                 (product.name && product.name.toLowerCase().includes(query)) || 
-                (product.category && product.category.toLowerCase().includes(query)));
-            const count = filteredProducts.length;
+                (product.category && product.category.toLowerCase().includes(query))
+            );
 
-            if (count > 0) {
-                filteredProducts.forEach(product => {
-                    searchProduct.appendChild(createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link));
-                    document.getElementById("btn_").classList.remove("d-none");
-                });
+            // Update the global search_data with the filtered products
+            search_data = filteredProducts;
+
+            // Reset to the first page for the filtered results
+            currentPage = 1;
+
+            // Render the products
+            renderProducts();
+
+            // Display the "clear" button and suggestion list if there are results
+            if (filteredProducts.length > 0) {
+                document.getElementById("btn_").classList.remove("d-none");
+            } else {
+                document.getElementById("btn_").classList.add("d-none");
             }
         }
+
+        function renderProducts() {
+        const searchProduct = document.getElementById('searchProduct');
+        searchProduct.innerHTML = ''; // Clear existing products
+
+        const start = (currentPage - 1) * productsPerPage;
+        const end = start + productsPerPage;
+        const paginatedProducts = search_data.slice(start, end);
+        
+        paginatedProducts.forEach(function(product) {
+            const productCard = createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link);
+            searchProduct.appendChild(productCard);
+            });
+            
+        fetchDataFromFile();// to reset the search_data as after filtered it lost the other data
+        renderPagination();
+    }
+
+    function renderPagination() {
+        const paginationContainer = document.getElementById('pagination');
+        paginationContainer.innerHTML = ''; // Clear existing pagination
+
+        const totalPages = Math.ceil(search_data.length / productsPerPage);
+
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.classList.add('page-btn');
+        prevButton.textContent = 'Prev';
+        prevButton.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderProducts();
+            }
+        });
+        paginationContainer.appendChild(prevButton);
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+            const pageButton = document.createElement('button');
+            pageButton.classList.add('page-btn');
+            pageButton.textContent = i;
+            pageButton.addEventListener('click', function() {
+                currentPage = i;
+                renderProducts();
+            });
+
+            if (i === currentPage) {
+                pageButton.classList.add('active');
+            }
+
+            paginationContainer.appendChild(pageButton);
+        }
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.classList.add('page-btn');
+        nextButton.textContent = 'Next';
+        nextButton.addEventListener('click', function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderProducts();
+            }
+        });
+        paginationContainer.appendChild(nextButton);
+
+        // Disable buttons if needed
+        prevButton.disabled = currentPage === 1;
+        nextButton.disabled = currentPage === totalPages;
+        }
+
 
         function createProductCard(name, image, logo, price, discount, link) {
             var card = document.createElement('div');
@@ -226,9 +307,10 @@
                 (product.category && product.category.toLowerCase().includes(query)));
             filteredProducts.sort((a, b) => order === 'low-to-high' ? parseInt(a.price) - parseInt(b.price) : parseInt(b.price) - parseInt(a.price));
 
-            filteredProducts.forEach(function(product) {
-                searchProduct.appendChild(createProductCard(product.name, product.image, product.logo, product.price, product.discount, product.link));
-            });
+            search_data = filteredProducts;
+            // Reset to first page after sorting
+            currentPage = 1;
+            renderProducts();
         }
 
         document.addEventListener("DOMContentLoaded", function() {
@@ -314,6 +396,9 @@
         <div class="row row-cols-1 row-cols-md-2 g-2 mb-5 mt-2" id="searchProduct">
         </div>
     </main>
+        <!--Pagination for navigation-->
+        <div id="searchProduct" class="row row-cols-2"></div>
+        <div id="pagination" class="pagination-container"></div>
 
     <div class="floating-buttons" style="display: none;">
         <a href="#header" id="scroll" class="btn btn-primary go-top-btn custom-btn"><i class="bi bi-arrow-up"></i></a>
@@ -394,7 +479,6 @@
                 behavior: 'smooth'
             });
         });
-
 
         
     </script>

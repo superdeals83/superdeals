@@ -56,8 +56,6 @@
             <h6>Get Ready for More Upcoming Deals!</h6>
             <p style="font-size:10px;">Stay tuned for upcoming exclusive offers and exciting new products.</p>
         </div>
-
-
         <div class="row mt-3 align-items-center">
             <div class="col-6">
                 <div class="dropdown">
@@ -77,36 +75,49 @@
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 g-2 mb-5 mt-2" id="productContainer"></div>
+        <!--Pagination for navigation-->
+        <div id="productContainer" class="row row-cols-2"></div>
+        <div id="pagination" class="pagination-container"></div>
     </main>
 
     <!-- Footer -->
-    <footer class="footer mt-auto py-3">
-        <div class="container">
-            <div class="row">
-                <!-- Logo Images -->
-                <div class="col-12 text-center">
-                    <img src="assets/logo.png" alt="Logo" class="logo-img">
-                </div>
+        <footer class="py-5 footer">
+          <div class="row">
+            <div class="col-md-5 offset-md-1 mb-3">
+                <img src="assets/logo.png" alt="Logo" class="logo-img">
+                
             </div>
-            <div class="row mt-2 text-sm-start">
-                <p class="text-secondary text-sm small">Welcome to <b>Super Deals</b>, your ultimate destination for the best online deals! We scour Amazon, Flipkart, and other leading e-commerce sites to bring you unbeatable discounts and exclusive offers on a wide range of products. Whether you're shopping for electronics, fashion, home goods, or more, Super Deals Hub ensures you save big on top-quality items. Shop smart, save more.<br><b class="text-secondary">Total Deals: <b id="counter"></b></b></p>
+            <div class="col-6 col-md-2 mb-3">
+              <h6>Pages</h6>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="index.html" class="nav-link p-0 text-secondary">Home</a></li>
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Search</a></li>
+                <li class="nav-item mb-2"><a href="feedback.html" class="nav-link p-0 text-secondary">Feedback</a></li>
+                <li class="nav-item mb-2"><a href="about.html" class="nav-link p-0 text-secondary">About</a></li>
+              </ul>
             </div>
-            <div class="row mt-3">
-                <!-- Navigation Links -->
-                <div class="col-12 text-center">
-                    <a href="search.html" class="footer-links">Search Products</a> |
-                    <a href="about.html" class="footer-links">About Us</a> |
-                    <a href="feedback.html" class="footer-links">Feedback</a>
-                </div>
+      
+            <div class="col-6 col-md-2 mb-3">
+              <h6>Categories</h6>
+              <ul class="nav flex-column">
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Smartwatch</a></li>
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Earphone</a></li>
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Speaker</a></li>
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Shoes</a></li>
+                <li class="nav-item mb-2"><a href="search.html" class="nav-link p-0 text-secondary">Gifts</a></li>
+              </ul>
             </div>
-            <div class="row mt-3">
-                <!-- Copyright -->
-                <div class="col-12 text-center">
-                    <p class="mb-0 text-sm small">© made by Super Deals</p>
-                </div>
-            </div>
-        </div>
-    </footer>
+      
+          </div>
+
+          <div class="row text-dark-emphasis">
+            <p>total available deals: <t id="counter"></t></p>
+          </div>
+      
+          <div class="d-flex flex-column flex-sm-row justify-content-between py-4 my-4 border-top">
+            <p class="text-sm small">© 2024 Super Deals, Inc. All rights reserved.</p>
+          </div>
+        </footer>
 
     <!-- Floating Buttons -->
     <div class="floating-buttons" style="display: none;">
