@@ -304,7 +304,7 @@
 
             const filteredProducts = search_data.filter(product =>
                 (product.name && product.name.toLowerCase().includes(query)) || 
-                (product.category && product.category.toLowerCase().includes(query)));
+                (product.category && product.category.includes(query)));
             filteredProducts.sort((a, b) => order === 'low-to-high' ? parseInt(a.price) - parseInt(b.price) : parseInt(b.price) - parseInt(a.price));
 
             search_data = filteredProducts;
